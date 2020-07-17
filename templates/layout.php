@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title><?=$title;?></title>
-    <link href="../css/normalize.min.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="css/normalize.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="page-wrapper">
@@ -53,7 +53,7 @@
         <ul class="nav__list container">
             <?php foreach ($categories as $val):?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=$val ?></a>
+                    <a href="pages/all-lots.html"><?=htmlspecialchars($val); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
