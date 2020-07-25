@@ -27,11 +27,11 @@ VALUES
 (3, 2, 9000);
 
 -- получить все категории
-SELECT title FROM categories;
+SELECT title, character_code FROM categories;
 
 -- получить самые новые, открытые лоты (название, стартовую цену, изображение, текущую цену, название категории)
 --  -- способ с группировкой по LEFT JOIN:
-SELECT lots.title, base_price, img, categories.title, IFNULL(MAX(amount), lots.base_price) FROM lots
+SELECT lots.title, base_price, img, closing_date as date_expiration, categories.title, IFNULL(MAX(amount), lots.base_price) as price FROM lots
 LEFT JOIN bets ON lots.id = bets.lotID
 JOIN categories ON lots.categoryID = categories.id
 WHERE closing_date > CURRENT_TIMESTAMP
@@ -39,7 +39,7 @@ GROUP BY lots.id
 ORDER BY lots.date_time DESC;
 
 --  -- способ с подзапросом:
-SELECT lots.title, base_price, img, categories.title, IFNULL((SELECT MAX(amount) FROM bets WHERE bets.lotID = lots.id), lots.base_price) FROM lots
+SELECT lots.title, base_price, img, closing_date as date_expiration, categories.title, IFNULL((SELECT MAX(amount) FROM bets WHERE bets.lotID = lots.id), lots.base_price) as price FROM lots
 JOIN categories ON lots.categoryID = categories.id
 WHERE closing_date > CURRENT_TIMESTAMP
 ORDER BY lots.date_time DESC;

@@ -7,8 +7,8 @@ require_once('functions/functions.php');
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
     <ul class="promo__list">
         <?php foreach ($categories as $val): ?>
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?=htmlspecialchars($val); ?></a>
+            <li class="promo__item promo__item--<?=$val['character_code']; ?>">
+                <a class="promo__link" href="pages/all-lots.html"><?=htmlspecialchars($val['title']); ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
