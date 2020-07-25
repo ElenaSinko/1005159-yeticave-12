@@ -2,60 +2,51 @@
 require_once('helpers.php');
 require_once('functions/functions.php');
 date_default_timezone_set("Africa/Libreville");
+$categories = [];
+$ads = [];
+
+$link = mysqli_connect("localhost", "root", "root","YetiCave");
+mysqli_set_charset($link, "utf8");
+
+if (!$link) {
+    $error = mysqli_connect_error();
+    print($error);
+    $page_content = include_template('error.php');
+}
+else {
+    $sql = 'SELECT title, character_code FROM categories';
+    $result = mysqli_query($link, $sql);
+    if ($result) {
+        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    else {
+        $error = mysqli_error($link);
+        $page_content = include_template('error.php');
+    }
+
+    $sql = 'SELECT lots.title, base_price, img, closing_date as date_expiration, categories.title, IFNULL(MAX(amount), lots.base_price) as price FROM lots
+            LEFT JOIN bets ON lots.id = bets.lotID
+            JOIN categories ON lots.categoryID = categories.id
+            WHERE closing_date > CURRENT_TIMESTAMP
+            GROUP BY lots.id
+            ORDER BY lots.date_time DESC';
+
+    $result = mysqli_query($link, $sql);
+
+    if ($result) {
+        $ads = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $page_content = include_template('main.php', ['ads' => $ads, 'categories' => $categories]);
+    }
+    else {
+        $error = mysqli_error($link);
+        $page_content = include_template('error.php');
+    }
+}
+
 
 $is_auth = rand(0, 1);
 
 $user_name = 'Elena Sinko';
-
-$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
-
-$ads = [
-    [
-        'title' => '2014 Rossignol District Snowboard',
-        'category' => 'Доски и лыжи',
-        'price' => 10999,
-        'img' => 'img/lot-1.jpg',
-        'date_expiration' => '2020-07-21'
-    ],
-    [
-        'title' => 'DC Ply Mens 2016/2017 Snowboard',
-        'category' => 'Доски и лыжи',
-        'price' => 159999,
-        'img' => 'img/lot-2.jpg',
-        'date_expiration' => '2020-07-21'
-    ],
-    [
-        'title' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-        'category' => 'Крепления',
-        'price' => 8000,
-        'img' => 'img/lot-3.jpg',
-        'date_expiration' => '2020-07-22'
-    ],
-    [
-        'title' => 'Ботинки для сноуборда DC Mutiny Charocal',
-        'category' => 'Ботинки',
-        'price' => 10999,
-        'img' => 'img/lot-4.jpg',
-        'date_expiration' => '2020-07-23'
-    ],
-    [
-        'title' => 'Куртка для сноуборда DC Mutiny Charocal',
-        'category' => 'Одежда',
-        'price' => 7500,
-        'img' => 'img/lot-5.jpg',
-        'date_expiration' => '2020-07-24'
-    ],
-    [
-        'title' => 'Маска Oakley Canopy',
-        'category' => 'Разное',
-        'price' => 5400,
-        'img' => 'img/lot-6.jpg',
-        'date_expiration' => '2020-07-25'
-    ]
-];
-
-
-$page_content = include_template('main.php', ['ads' => $ads, 'categories' => $categories]);
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
