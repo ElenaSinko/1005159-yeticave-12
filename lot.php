@@ -5,9 +5,6 @@ $ads = [];
 
 $lot_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 
-$link = mysqli_connect("localhost", "root", "root","YetiCave");
-mysqli_set_charset($link, "utf8");
-
 if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php');

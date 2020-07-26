@@ -12,14 +12,14 @@ require_once('functions/functions.php');
     </ul>
 </nav>
 <section class="lot-item container">
-    <h2><?=$lot['lot_title']; ?></h2>
+    <h2><?=htmlspecialchars($lot['lot_title']); ?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src=<?=$lot['img'];?> width="730" height="548" alt=<?=$lot['lot_title']; ?>>
+                <img src=<?=htmlspecialchars($lot['img']);?> width="730" height="548" alt=<?=htmlspecialchars($lot['lot_title']); ?>>
             </div>
             <p class="lot-item__category">Категория: <span><?=$lot['lot_category'];?></span></p>
-            <p class="lot-item__description"><?=$lot['description'];?></p>
+            <p class="lot-item__description"><?=htmlspecialchars($lot['description']);?></p>
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
