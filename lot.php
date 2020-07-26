@@ -3,12 +3,7 @@ require_once('settings.php');
 $categories = [];
 $ads = [];
 
-if (isset($_GET['id'])) {
-    $lot_id = $_GET['id'];
-}
-else {
-    $page_content = include_template('error.php');
-}
+$lot_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $link = mysqli_connect("localhost", "root", "root","YetiCave");
 mysqli_set_charset($link, "utf8");
