@@ -34,7 +34,7 @@ else {
                 $errors['lot-step'] = 'Шаг ставки должен быть больше нуля';
             }
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['lot-date'])) {
-                $errors['lot-date'] = 'Форат да ты должен быть ГГГГ-ММ-ДД';
+                $errors['lot-date'] = 'Дата должна быть записана в формате: ГГГГ-ММ-ДД';
             }
             if (!validate_lot_date($_POST['lot-date'])) {
                 $errors['lot-date'] = 'Торги могут быть завершены не ранее, чем через один день';
@@ -45,7 +45,11 @@ else {
 
             if(!empty($_FILES['lot-img']['name'])) {
                 $allowed_types = ['image/jpeg','image/png','image/gif'];
-                $_FILES['lot-img']['name'] = translate( $_FILES['lot-img']['name']);
+                $img_name = stristr($_FILES['lot-img']['name'], '.', true);
+                $img_extension = stristr($_FILES['lot-img']['name'], '.');
+                $img_name = translate($img_name);
+                $_FILES['lot-img']['name'] = $img_name . $img_extension;
+//                $_FILES['lot-img']['name'] = translate( $_FILES['lot-img']['name']);
                 $file_name = uniqid() . $_FILES['lot-img']['name'];
                 $file_path = __DIR__ . '/uploads/';
                 $file_url = '/uploads/' . $file_name;
@@ -68,14 +72,7 @@ else {
                 $sql = 'INSERT INTO lots(userID, title, categoryID, description, img, base_price, step_price, closing_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
                 $stmt = mysqli_prepare($link, $sql);
                 $userID = 1;
-                $title = $lot['lot-name'];
-                $categoryID = $lot['category'];
-                $description = $lot['message'];
-                $img = $lot['img'];
-                $base_price = $lot['lot-rate'];
-                $step_price = $lot['lot-step'];
-                $closing_date = $lot['lot-date'];
-                mysqli_stmt_bind_param($stmt, 'isissiis', $userID, $title, $categoryID, $description, $img, $base_price, $step_price,  $closing_date);
+                mysqli_stmt_bind_param($stmt, 'isissiis', $userID, $lot['lot-name'], $lot['category'], $lot['message'], $img = $lot['img'], $lot['lot-rate'], $lot['lot-step'],  $lot['lot-date']);
                 $res = mysqli_stmt_execute($stmt);
                 if ($res) {
                     $lot_id = mysqli_insert_id($link);
@@ -98,7 +95,7 @@ $page_content = include_template('add_template.php', ['categories' => $categorie
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
-    'title' => 'Новый лот',
+    'title' => 'Добавление лота',
     'is_auth' => $is_auth,
     'user_name' => $user_name
 ]);
