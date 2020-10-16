@@ -7,7 +7,6 @@
         <?php endforeach; ?>
     </ul>
 </nav>
-
 <?php $classname = count($errors) ? 'form--invalid' : ""; ?>
 <form class="form form--add-lot container <?= $classname; ?>" action="add.php" method="post" enctype="multipart/form-data">
 <h2>Добавление лота</h2>

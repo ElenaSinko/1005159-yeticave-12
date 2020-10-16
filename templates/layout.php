@@ -33,7 +33,7 @@
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="pages/sign-up.html">Регистрация</a>
+                            <a href="sign-up.php">Регистрация</a>
                         </li>
                         <li class="user-menu__item">
                             <a href="#">Вход</a>
