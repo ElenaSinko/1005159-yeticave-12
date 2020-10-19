@@ -1,23 +1,10 @@
 <nav class="nav">
     <ul class="nav__list container">
-        <li class="nav__item">
-            <a href="all-lots.html">Доски и лыжи</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Крепления</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Ботинки</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Одежда</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Инструменты</a>
-        </li>
-        <li class="nav__item">
-            <a href="all-lots.html">Разное</a>
-        </li>
+        <?php foreach($categories as $val): ?>
+            <li class="nav__item">
+                <a href="all-lots.html"><?=htmlspecialchars($val['title']); ?></a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
 <form class="form container" action="https://echo.htmlacademy.ru" method="post"> <!-- form--invalid -->

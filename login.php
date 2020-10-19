@@ -94,7 +94,7 @@ $page_content = include_template('login_template.php', ['categories' => $categor
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
-    'title' => 'Добавление лота',
+    'title' => 'Страница авторизации',
     'is_auth' => $is_auth,
     'user_name' => $user_name
 ]);
