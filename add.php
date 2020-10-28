@@ -1,7 +1,12 @@
 <?php
+session_start();
 require_once('settings.php');
 $categories = [];
 $errors = [];
+
+//if (!isset($_SESSION['user'])) {
+//    http_response_code(403);
+//}
 
 if (!$link) {
     $error = mysqli_connect_error();
@@ -90,7 +95,13 @@ else {
     }
 }
 
-$page_content = include_template('add_template.php', ['categories' => $categories, 'errors' => $errors]);
+
+if (isset($_SESSION['user'])) {
+    $page_content = include_template('add_template.php', ['categories' => $categories, 'errors' => $errors]);
+} else {
+    $page_content = include_template('error.php', ['error' => 'Войдите в свой аккаунт или зарегистрируйтесь']);
+}
+
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

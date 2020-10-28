@@ -1,13 +1,15 @@
 <?php
 require_once('settings.php');
+session_start();
 $categories = [];
 $errors = [];
+$ads = [];
+$is_auth = 0;
 
 if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php');
-}
-else {
+} else {
     $sql = 'SELECT title, character_code FROM categories';
     $result = mysqli_query($link, $sql);
     if ($result) {
@@ -55,12 +57,13 @@ else {
         $error = mysqli_error($link);
         $page_content = include_template('error.php');
     }
-    $page_content = include_template('sign-up_template.php', ['categories' => $categories, 'errors' => $errors]);
 }
 
-$is_auth = rand(0, 1);
-
-$user_name = 'Elena Sinko';
+if (!isset($_SESSION['user'])) {
+    $page_content = include_template('sign-up_template.php', ['categories' => $categories, 'errors' => $errors]);
+} else {
+    $page_content = include_template('error.php', ['error' => 'Вы уже зарегистрированы']);
+}
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
