@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS lots (
                       FOREIGN KEY(winnerID) REFERENCES users(id)
 );
 
+CREATE FULLTEXT INDEX lot_ft_search ON lots(title, description);
+
 CREATE INDEX TIndex ON lots(title);
 CREATE INDEX PIndex ON lots(base_price);
 
